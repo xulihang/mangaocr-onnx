@@ -1,7 +1,7 @@
 import re
 import jaconv
 import numpy as np
-
+import time
 from onnxruntime import InferenceSession
 from PIL import Image
 
@@ -86,6 +86,17 @@ class MangaOCR():
         
         
 if __name__ == "__main__":
+    # 记录开始时间
+    start_time = time.time()
     ocr = MangaOCR(model_path="ocr/quantized_model.onnx", vocab_path="ocr/vocab.txt")
+    # 记录模型初始化时间
+    init_time = time.time()
+    print(f"模型初始化耗时: {init_time - start_time:.3f} 秒")
+    text = ocr(Image.open("image.jpg"))
+    print(text)
+    # 记录识别完成时间
+    end_time = time.time()
+    print(f"OCR识别耗时: {end_time - init_time:.3f} 秒")
+    print(f"总处理时间: {end_time - start_time:.3f} 秒")
     text = ocr(Image.open("image.jpg"))
     print(text)
